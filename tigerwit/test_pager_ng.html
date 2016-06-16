@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>test_paper</title>
+    </head>
+    <body ng-app="test">
+        <div ng-controller="table">
+        	<table >
+                <tr tptr th-data="['综合排名','价格','销量','人气']">
+                </tr>
+        		<tr>
+        			<td>1</td>
+        			<td>355</td>
+        			<td>1000</td>
+        			<td>788</td>
+        		</tr>
+        		<tr>
+        			<td>2</td>
+        			<td>260</td>
+        			<td>870</td>
+        			<td>560</td>
+        		</tr>
+        		<tr>
+        			<td>3</td>
+        			<td>280</td>
+        			<td>320</td>
+        			<td>900</td>
+        		</tr>
+        	</table>
+        </div>
+    </body>
+    <style type="text/css">
+    	table,th,td{border:1px solid #ccc;padding:4px;}
+    	table{border-collapse:collapse;}
+    	.active{background:#ccc;}
+    	.arrow{border:6px solid transparent;display:inline-block;font-size:0;width:0;height:0;margin-bottom:2px;}
+    	.active .arrow{border-bottom-color:black;}
+    	.arrow-converse .arrow{
+			transform:rotate(180deg);
+			margin-bottom:-3px;  
+    	}
+    </style>
+    <script src="http://cdn.bootcss.com/angular.js/1.5.5/angular.min.js"></script>   
+    <script type="text/javascript">
+    angular.module('test',[]).controller('table', function($scope){
+    }).directive('tptr', function(){
+        return {
+            restrict : "A",
+            template : '<tr><th ng-repeat="th in data" ng-class="{active:index == $index}" ng-click="click($event,$index)">{{th}}<span class="arrow"></span></th></tr>',
+            scope : {
+                thData : "@"
+            },
+            replace : true,
+            link : function(scope, element, attrs){
+                scope.data = scope.$eval(scope.thData);  
+                scope.click = function($event, index){
+                    scope.index = index;
+                    angular.element($event.target).toggleClass('arrow-converse');
+                };
+            }
+        };
+    });
+    </script>
+</html>
